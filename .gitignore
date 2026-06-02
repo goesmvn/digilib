@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local databases
+data/
+
+# workspace config
+.vscode/
+
+# scratch pad
+scratch/
