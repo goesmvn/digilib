@@ -18,7 +18,7 @@ const contactInfo = [
   {
     iconType: 'address',
     label: 'Alamat',
-    value: 'Jl. Dharmawangsa, Nusa Dua, Badung, Bali 80363',
+    value: 'Jl. Dharmawangsa, Kampial, Nusa Dua, Bali 80363',
     link: 'https://maps.app.goo.gl/kqE4b62NdoMVG9pe9',
   },
   {
