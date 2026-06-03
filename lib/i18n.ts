@@ -49,7 +49,8 @@ export const translations = {
       location: 'Lokasi:',
       time: 'Waktu:',
       registerBtn: 'Daftar Kegiatan',
-      noEvents: 'Tidak ada agenda kegiatan terdekat saat ini.'
+      noEvents: 'Tidak ada agenda kegiatan terdekat saat ini.',
+      moreBtn: 'Buka Agenda Selengkapnya'
     },
     quickLinks: {
       badge: 'Akses Layanan',
@@ -171,7 +172,8 @@ export const translations = {
       location: 'Location:',
       time: 'Time:',
       registerBtn: 'Register Event',
-      noEvents: 'No upcoming library events at the moment.'
+      noEvents: 'No upcoming library events at the moment.',
+      moreBtn: 'View More Events'
     },
     quickLinks: {
       badge: 'Service Access',
