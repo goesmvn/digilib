@@ -91,11 +91,16 @@ export default async function LatestNews({ lang }: { lang: 'id' | 'en' }) {
                       />
                     </svg>
                     <span className="text-xs font-semibold">
-                      {new Date(item.date).toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                      })}
+                      {(() => {
+                        const d = new Date(item.date)
+                        return !isNaN(d.getTime())
+                          ? d.toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                            })
+                          : item.date
+                      })()}
                     </span>
                   </div>
 

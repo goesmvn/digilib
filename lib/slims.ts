@@ -75,11 +75,12 @@ export async function getLibraryEvents(limit: number = 3): Promise<SLIMSEvent[]>
       } as any
     )
 
-    let events: SLIMSEvent[] = []
-    if (response.ok) {
-      const data = await response.json()
-      events = data.events || []
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: Failed to fetch events from SLIMS API`)
     }
+
+    const data = await response.json()
+    const events = data.events || []
 
     const combined = [...custom, ...events]
     return combined.slice(0, limit)

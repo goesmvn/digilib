@@ -26,14 +26,17 @@ export default async function UpcomingEvents({ lang }: { lang: 'id' | 'en' }) {
         <div className="space-y-6">
           {events.map((event) => {
             const eventDate = new Date(event.date)
-            const day = eventDate.getDate()
-            const month = eventDate.toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', { month: 'short' })
-            const fullDateStr = eventDate.toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', {
-              weekday: 'long',
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })
+            const isValidDate = !isNaN(eventDate.getTime())
+            const day = isValidDate ? eventDate.getDate() : '--'
+            const month = isValidDate ? eventDate.toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', { month: 'short' }) : '---'
+            const fullDateStr = isValidDate
+              ? eventDate.toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })
+              : event.date
 
             return (
               <div

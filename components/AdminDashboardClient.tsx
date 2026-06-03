@@ -519,7 +519,12 @@ export default function AdminDashboardClient() {
                             <td className="px-5 py-4">
                               <span className="block font-bold text-gray-900 leading-snug line-clamp-1">{item.title}</span>
                               <span className="block text-xs text-gray-400 font-semibold mt-1">
-                                {new Date(item.date).toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', { year: 'numeric', month: 'short', day: 'numeric' })}
+                                {(() => {
+                                  const d = new Date(item.date)
+                                  return !isNaN(d.getTime())
+                                    ? d.toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', { year: 'numeric', month: 'short', day: 'numeric' })
+                                    : item.date
+                                })()}
                               </span>
                             </td>
                             <td className="px-5 py-4 whitespace-nowrap">
@@ -572,7 +577,12 @@ export default function AdminDashboardClient() {
                             </td>
                             <td className="px-5 py-4 whitespace-nowrap text-xs">
                               <span className="block font-bold text-gray-700">
-                                {new Date(item.date).toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', { year: 'numeric', month: 'short', day: 'numeric' })}
+                                {(() => {
+                                  const d = new Date(item.date)
+                                  return !isNaN(d.getTime())
+                                    ? d.toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', { year: 'numeric', month: 'short', day: 'numeric' })
+                                    : item.date
+                                })()}
                               </span>
                               <span className="block text-gray-400 font-semibold mt-0.5">{item.time} WITA</span>
                             </td>
