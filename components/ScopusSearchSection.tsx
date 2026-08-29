@@ -188,7 +188,7 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
             <button
               type="submit"
               disabled={loading}
-              className="px-7 py-3.5 bg-gradient-to-r from-[#164887] to-accent-600 hover:from-[#123b6e] hover:to-accent-500 text-white font-bold rounded-xl text-sm transition-all duration-300 shadow-md hover:shadow-lg shrink-0 flex items-center justify-center gap-2 border border-accent-400/30"
+              className="px-7 py-3.5 bg-accent-500 hover:bg-accent-600 text-white font-bold rounded-xl text-sm transition-all duration-300 shadow-md hover:shadow-lg shrink-0 flex items-center justify-center gap-2 border border-accent-400/40"
             >
               {loading ? (
                 <>
