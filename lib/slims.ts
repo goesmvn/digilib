@@ -76,7 +76,28 @@ export async function getLibraryEvents(limit: number = 3): Promise<SLIMSEvent[]>
     )
 
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: Failed to fetch events from SLIMS API`)
+      console.warn(`SLIMS API returned status ${response.status}. Using fallback events.`)
+      const defaultEvents = [
+        {
+          id: '1',
+          title: 'Workshop Literasi Digital',
+          date: '2026-06-15',
+          time: '10:00',
+          description: 'Workshop pelatihan penggunaan database digital perpustakaan',
+          location: 'Ruang Baca Utama',
+          image: '/service-books.png',
+        },
+        {
+          id: '2',
+          title: 'Launching E-Journal Perpustakaan',
+          date: '2026-06-20',
+          time: '14:00',
+          description: 'Peluncuran platform e-journal penelitian terbaru',
+          image: '/service-journal.png',
+        },
+      ]
+      const combined = [...custom, ...defaultEvents]
+      return combined.slice(0, limit)
     }
 
     const data = await response.json()

@@ -4,6 +4,7 @@ import Statistics from '@/components/Statistics'
 import LatestNews from '@/components/LatestNews'
 import UpcomingEvents from '@/components/UpcomingEvents'
 import QuickLinks from '@/components/QuickLinks'
+import ScopusSearchSection from '@/components/ScopusSearchSection'
 
 interface PageProps {
   searchParams: Promise<{ lang?: string }>
@@ -16,6 +17,8 @@ export default async function Home({ searchParams }: PageProps) {
   return (
     <>
       <Hero lang={lang} />
+
+      <ScopusSearchSection lang={lang} />
 
       <Suspense fallback={<StatisticsSkeleton />}>
         <Statistics lang={lang} />

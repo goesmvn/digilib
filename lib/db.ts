@@ -43,6 +43,12 @@ export async function getDB() {
         location TEXT,
         image TEXT
       );
+
+      CREATE TABLE IF NOT EXISTS settings (
+        key TEXT PRIMARY KEY,
+        value TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      );
     `)
 
     // Dynamic schema migration: add image column if it does not exist
@@ -145,4 +151,25 @@ export async function addCustomEvent(eventItem: Omit<CustomEvent, 'id'>): Promis
 export async function deleteCustomEvent(id: string): Promise<void> {
   const db = await getDB()
   await db.run('DELETE FROM events WHERE id = ?', [id])
+}
+
+// Scopus settings helpers
+export async function getSetting(key: string): Promise<string | null> {
+  try {
+    const db = await getDB()
+    const row = await db.get<{ value: string }>('SELECT value FROM settings WHERE key = ?', [key])
+    return row ? row.value : null
+  } catch (e) {
+    console.error(`Error reading setting ${key}:`, e)
+    return null
+  }
+}
+
+export async function setSetting(key: string, value: string): Promise<void> {
+  const db = await getDB()
+  const updatedAt = new Date().toISOString()
+  await db.run(
+    'INSERT INTO settings (key, value, updated_at) VALUES (?, ?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at',
+    [key, value, updatedAt]
+  )
 }
