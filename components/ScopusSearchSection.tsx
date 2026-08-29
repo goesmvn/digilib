@@ -261,8 +261,8 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
                     title={isEn ? 'Save for campus download' : 'Simpan untuk di-download di kampus'}
                     className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
                       savedArticles.some(a => a.id === item.id)
-                        ? 'bg-amber-500 text-white font-bold shadow-sm'
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-200'
+                        ? 'bg-amber-600 text-white font-bold shadow-sm'
+                        : 'bg-primary-900 hover:bg-primary-800 text-white shadow-sm'
                     }`}
                   >
                     <svg className="w-3.5 h-3.5" fill={savedArticles.some(a => a.id === item.id) ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
@@ -276,7 +276,7 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
                       href={item.scopusUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-xs font-semibold transition-all border border-gray-200"
+                      className="px-3 py-1.5 bg-primary-950 hover:bg-primary-900 text-white rounded-lg text-xs font-semibold transition-all shadow-sm"
                     >
                       {isEn ? 'Scopus Link' : 'Buka Scopus'}
                     </a>
@@ -307,7 +307,7 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage <= 1 || loading}
-              className="px-4 py-2 bg-white hover:bg-gray-100 border border-gray-300 disabled:opacity-40 disabled:cursor-not-allowed text-gray-700 text-xs font-bold rounded-lg transition-all shadow-sm"
+              className="px-4 py-2 bg-primary-900 hover:bg-primary-800 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-bold rounded-lg transition-all shadow-sm"
             >
               {isEn ? 'Previous' : 'Sebelumnya'}
             </button>
@@ -321,7 +321,7 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage >= Math.ceil(total / pageSize) || loading}
-              className="px-4 py-2 bg-white hover:bg-gray-100 border border-gray-300 disabled:opacity-40 disabled:cursor-not-allowed text-gray-700 text-xs font-bold rounded-lg transition-all shadow-sm"
+              className="px-4 py-2 bg-primary-900 hover:bg-primary-800 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-bold rounded-lg transition-all shadow-sm"
             >
               {isEn ? 'Next' : 'Selanjutnya'}
             </button>
@@ -442,7 +442,7 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
 
                   <button
                     onClick={() => setShowSavedModal(false)}
-                    className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-xs font-semibold rounded-lg text-gray-700 border border-gray-200"
+                    className="px-4 py-2 bg-primary-900 hover:bg-primary-800 text-xs font-semibold rounded-lg text-white transition-all"
                   >
                     {isEn ? 'Close' : 'Tutup'}
                   </button>
