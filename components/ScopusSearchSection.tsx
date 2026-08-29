@@ -276,7 +276,7 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
                       href={item.scopusUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-3 py-1.5 bg-primary-950 hover:bg-primary-900 text-white rounded-lg text-xs font-semibold transition-all border border-primary-800/40 shadow-sm"
+                      className="px-3 py-1.5 bg-primary-900 hover:bg-primary-800 text-white rounded-lg text-xs font-semibold transition-all border border-primary-800 shadow-sm"
                     >
                       {isEn ? 'Scopus Link' : 'Buka Scopus'}
                     </a>
