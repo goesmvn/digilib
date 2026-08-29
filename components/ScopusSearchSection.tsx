@@ -291,10 +291,10 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
                   <button
                     onClick={() => toggleSaveArticle(item)}
                     title={isEn ? 'Save for campus download' : 'Simpan untuk di-download di kampus'}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 shadow-sm ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 shadow-sm border ${
                       savedArticles.some(a => a.id === item.id)
-                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500'
-                        : 'bg-[#164887] hover:bg-[#123b6e] text-white border border-[#164887]'
+                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-500'
+                        : 'bg-white hover:bg-gray-50 text-[#1E5BA8] border border-gray-200'
                     }`}
                   >
                     <svg className="w-3.5 h-3.5" fill={savedArticles.some(a => a.id === item.id) ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
@@ -308,7 +308,7 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
                       href={item.scopusUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-3 py-1.5 bg-[#164887] hover:bg-[#123b6e] text-white rounded-lg text-xs font-semibold transition-all border border-[#164887] shadow-sm"
+                      className="px-3 py-1.5 bg-white hover:bg-gray-50 text-[#1E5BA8] rounded-lg text-xs font-bold transition-all border border-gray-200 shadow-sm"
                     >
                       {isEn ? 'Scopus Link' : 'Buka Scopus'}
                     </a>
