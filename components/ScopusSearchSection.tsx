@@ -34,6 +34,7 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
   const [total, setTotal] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [yearFilter, setYearFilter] = useState('')
   const [savedArticles, setSavedArticles] = useState<SavedArticle[]>([])
   const [showSavedModal, setShowSavedModal] = useState(false)
   const pageSize = 10
@@ -75,7 +76,7 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
     localStorage.setItem('digilib_saved_articles', JSON.stringify(updated))
   }
 
-  async function fetchResults(searchQuery: string, page: number) {
+  async function fetchResults(searchQuery: string, page: number, year: string = yearFilter) {
     if (!searchQuery.trim()) return
 
     setLoading(true)
@@ -84,7 +85,11 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
     const start = (page - 1) * pageSize
 
     try {
-      const res = await fetch(`/api/scopus/search?q=${encodeURIComponent(searchQuery.trim())}&start=${start}&count=${pageSize}`)
+      let url = `/api/scopus/search?q=${encodeURIComponent(searchQuery.trim())}&start=${start}&count=${pageSize}`
+      if (year) {
+        url += `&year=${encodeURIComponent(year)}`
+      }
+      const res = await fetch(url)
       const data = await res.json()
 
       if (!res.ok) {
@@ -107,12 +112,20 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
   function handleSearch(e: React.FormEvent) {
     e.preventDefault()
     setCurrentPage(1)
-    fetchResults(query, 1)
+    fetchResults(query, 1, yearFilter)
   }
 
   function handlePageChange(newPage: number) {
     setCurrentPage(newPage)
-    fetchResults(query, newPage)
+    fetchResults(query, newPage, yearFilter)
+  }
+
+  function handleYearChange(selectedYear: string) {
+    setYearFilter(selectedYear)
+    setCurrentPage(1)
+    if (query.trim()) {
+      fetchResults(query, 1, selectedYear)
+    }
   }
 
   return (
@@ -143,8 +156,8 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
           </div>
         </div>
 
-        {/* Search Bar */}
-        <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-12">
+        {/* Search Bar & Year Filter */}
+        <form onSubmit={handleSearch} className="max-w-3xl mx-auto mb-12">
           <div className="flex flex-col sm:flex-row gap-3 bg-white p-2.5 rounded-2xl border border-gray-200 shadow-md">
             <input
               type="text"
@@ -153,10 +166,29 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
               placeholder={isEn ? 'Search keywords, author, or paper title...' : 'Cari kata kunci, penulis, atau judul artikel...'}
               className="flex-1 bg-transparent px-4 py-3 text-gray-900 placeholder-gray-400 outline-none text-sm md:text-base"
             />
+            
+            <select
+              value={yearFilter}
+              onChange={(e) => handleYearChange(e.target.value)}
+              className="bg-gray-50 border border-gray-200 text-gray-800 text-xs md:text-sm font-semibold rounded-xl px-3 py-3 outline-none cursor-pointer hover:bg-gray-100 transition-colors shrink-0"
+            >
+              <option value="">{isEn ? 'All Years' : 'Semua Tahun'}</option>
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+              <option value="2019">2019</option>
+              <option value="2018">2018</option>
+              <option value="2015">2015 - 2017</option>
+            </select>
+
             <button
               type="submit"
               disabled={loading}
-              className="px-8 py-3.5 bg-gradient-to-r from-primary-900 via-primary-800 to-accent-600 hover:from-primary-800 hover:to-accent-500 text-white font-bold rounded-xl text-sm transition-all duration-300 shadow-md hover:shadow-lg shrink-0 flex items-center justify-center gap-2 border border-accent-400/30"
+              className="px-7 py-3.5 bg-gradient-to-r from-primary-900 via-primary-800 to-accent-600 hover:from-primary-800 hover:to-accent-500 text-white font-bold rounded-xl text-sm transition-all duration-300 shadow-md hover:shadow-lg shrink-0 flex items-center justify-center gap-2 border border-accent-400/30"
             >
               {loading ? (
                 <>

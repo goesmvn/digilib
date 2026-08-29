@@ -29,6 +29,7 @@ export async function GET(req: Request) {
   const query = searchParams.get('q') || ''
   const start = searchParams.get('start') || '0'
   const count = searchParams.get('count') || '10'
+  const year = searchParams.get('year') || ''
 
   if (!query.trim()) {
     return NextResponse.json({ error: 'Query parameter q is required' }, { status: 400 })
@@ -65,7 +66,13 @@ export async function GET(req: Request) {
   // Call Elsevier Scopus Search API
   try {
     const scopusUrl = new URL('https://api.elsevier.com/content/search/scopus')
-    scopusUrl.searchParams.set('query', query)
+    let finalQuery = query
+    if (year.trim()) {
+      finalQuery = `(${query}) AND PUBYEAR IS ${year}`
+    } else {
+      finalQuery = query
+    }
+    scopusUrl.searchParams.set('query', finalQuery)
     scopusUrl.searchParams.set('start', start)
     scopusUrl.searchParams.set('count', count)
 
