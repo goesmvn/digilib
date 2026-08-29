@@ -84,47 +84,47 @@ export function StatisticsClient({ stats: initialStats, lang }: StatisticsClient
   return (
     <section
       ref={sectionRef}
-      className="py-12 relative bg-gray-900 text-white"
+      className="py-12 relative bg-gray-50/70 border-t border-b border-gray-200/80"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#1e293b]/90 border border-white/15 rounded-3xl p-8 md:p-10 shadow-2xl backdrop-blur-md">
-          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/15">
+        <div className="bg-white border border-gray-200/90 rounded-3xl p-8 md:p-10 shadow-lg">
+          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-200/90">
             
             {/* Item 1: Jurusan Hospitaliti */}
             <div className="flex flex-col items-center justify-center text-center pb-6 md:pb-0 md:px-6">
-              <span className="text-4xl md:text-5xl font-extrabold text-amber-400 tracking-tight mb-2">
+              <span className="text-4xl md:text-5xl font-extrabold text-accent-600 tracking-tight mb-2">
                 {hospitalityCount.toLocaleString('id-ID')}+
               </span>
-              <span className="text-gray-300 font-semibold text-sm md:text-base">
+              <span className="text-primary-900 font-extrabold text-sm md:text-base">
                 {isEn ? 'Hospitality Department Articles' : 'Judul Artikel Jurusan Hospitaliti'}
               </span>
-              <span className="text-[11px] text-gray-400 mt-1 max-w-[240px] leading-tight">
+              <span className="text-[11px] text-gray-500 mt-1 max-w-[240px] leading-tight font-medium">
                 {isEn ? 'PPH, MAH, DIK, SKU, TAH' : 'PPH, MAH, DIK, SKU, TAH'}
               </span>
             </div>
 
             {/* Item 2: Jurusan Kepariwisataan */}
             <div className="flex flex-col items-center justify-center text-center py-6 md:py-0 md:px-6">
-              <span className="text-4xl md:text-5xl font-extrabold text-amber-400 tracking-tight mb-2">
+              <span className="text-4xl md:text-5xl font-extrabold text-accent-600 tracking-tight mb-2">
                 {kepariwisataanCount.toLocaleString('id-ID')}+
               </span>
-              <span className="text-gray-300 font-semibold text-sm md:text-base">
+              <span className="text-primary-900 font-extrabold text-sm md:text-base">
                 {isEn ? 'Tourism Department Articles' : 'Judul Artikel Jurusan Kepariwisataan'}
               </span>
-              <span className="text-[11px] text-gray-400 mt-1 max-w-[240px] leading-tight">
+              <span className="text-[11px] text-gray-500 mt-1 max-w-[240px] leading-tight font-medium">
                 {isEn ? 'DEP, UPW, PKA' : 'DEP, UPW, PKA'}
               </span>
             </div>
 
             {/* Item 3: Total Koleksi Scopus */}
             <div className="flex flex-col items-center justify-center text-center pt-6 md:pt-0 md:px-6">
-              <span className="text-4xl md:text-5xl font-extrabold text-amber-400 tracking-tight mb-2">
+              <span className="text-4xl md:text-5xl font-extrabold text-accent-600 tracking-tight mb-2">
                 {totalCount.toLocaleString('id-ID')}+
               </span>
-              <span className="text-gray-300 font-semibold text-sm md:text-base">
+              <span className="text-primary-900 font-extrabold text-sm md:text-base">
                 {isEn ? 'Total Indexed Scopus Articles' : 'Total Judul Artikel Terindeks Scopus'}
               </span>
-              <span className="text-[11px] text-amber-400/80 mt-1 leading-tight">
+              <span className="text-[11px] text-accent-600 font-bold mt-1 leading-tight">
                 {isEn ? 'Source From Elsevier Scopus' : 'Source From Elsevier Scopus'}
               </span>
             </div>
