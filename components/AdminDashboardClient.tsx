@@ -11,6 +11,7 @@ const dashboardTranslations = {
     tabNews: 'Manajemen Berita',
     tabEvents: 'Agenda & Acara',
     tabScopus: 'Pengaturan Scopus API',
+    tabAccount: 'Keamanan & Akun',
     newsTitle: 'Tambah Berita Baru',
     eventTitle: 'Tambah Acara Baru',
     formTitle: 'Judul Publikasi',
@@ -43,6 +44,7 @@ const dashboardTranslations = {
     tabNews: 'News Management',
     tabEvents: 'Agendas & Events',
     tabScopus: 'Scopus API Settings',
+    tabAccount: 'Security & Account',
     newsTitle: 'Add New Custom News',
     eventTitle: 'Add New Custom Event',
     formTitle: 'Publication Title',
@@ -78,9 +80,16 @@ export default function AdminDashboardClient() {
   const t = dashboardTranslations[lang]
 
   // State Management
-  const [activeTab, setActiveTab] = useState<'news' | 'events' | 'scopus'>('news')
+  const [activeTab, setActiveTab] = useState<'news' | 'events' | 'scopus' | 'account'>('news')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null)
+
+  // Account State
+  const [currentAdminUsername, setCurrentAdminUsername] = useState('admin')
+  const [accountCurrentPassword, setAccountCurrentPassword] = useState('')
+  const [accountNewUsername, setAccountNewUsername] = useState('')
+  const [accountNewPassword, setAccountNewPassword] = useState('')
+  const [accountConfirmPassword, setAccountConfirmPassword] = useState('')
 
   // Scopus Config Form state
   const [scopusApiKey, setScopusApiKey] = useState('')
@@ -113,7 +122,73 @@ export default function AdminDashboardClient() {
   useEffect(() => {
     fetchData()
     fetchScopusConfig()
+    fetchAccountInfo()
   }, [])
+
+  async function fetchAccountInfo() {
+    try {
+      const res = await fetch('/api/admin/account')
+      if (res.ok) {
+        const data = await res.json()
+        if (data.username) setCurrentAdminUsername(data.username)
+      }
+    } catch (e) {
+      console.error('Failed to fetch admin account info:', e)
+    }
+  }
+
+  async function handleAccountSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setMessage(null)
+
+    if (accountNewPassword && accountNewPassword.length < 8) {
+      setMessage({
+        text: lang === 'en' ? 'New password must be at least 8 characters.' : 'Kata sandi baru minimal 8 karakter.',
+        type: 'error',
+      })
+      return
+    }
+
+    if (accountNewPassword && accountNewPassword !== accountConfirmPassword) {
+      setMessage({
+        text: lang === 'en' ? 'New password confirmation does not match.' : 'Konfirmasi kata sandi baru tidak cocok.',
+        type: 'error',
+      })
+      return
+    }
+
+    setLoading(true)
+    try {
+      const res = await fetch('/api/admin/account', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          currentPassword: accountCurrentPassword,
+          newUsername: accountNewUsername.trim() || undefined,
+          newPassword: accountNewPassword.trim() || undefined,
+        }),
+      })
+
+      const data = await res.json()
+      if (res.ok) {
+        setMessage({
+          text: lang === 'en' ? 'Admin credentials updated successfully!' : 'Kredensial admin berhasil diperbarui!',
+          type: 'success',
+        })
+        setAccountCurrentPassword('')
+        setAccountNewPassword('')
+        setAccountConfirmPassword('')
+        setAccountNewUsername('')
+        fetchAccountInfo()
+      } else {
+        setMessage({ text: data.error || 'Failed to update credentials.', type: 'error' })
+      }
+    } catch (err) {
+      setMessage({ text: 'Network error.', type: 'error' })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   async function fetchScopusConfig() {
     try {
@@ -412,10 +487,127 @@ export default function AdminDashboardClient() {
             </svg>
             {t.tabScopus}
           </button>
+
+          <button
+            onClick={() => { setActiveTab('account'); setMessage(null); }}
+            className={`flex-1 py-3 px-4 text-center font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2 ${
+              activeTab === 'account'
+                ? 'bg-primary-500 text-white shadow-sm'
+                : 'text-gray-600 hover:text-primary-600 hover:bg-gray-50'
+            }`}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {t.tabAccount}
+          </button>
         </div>
 
         {/* Tab Content Rendering */}
-        {activeTab === 'scopus' ? (
+        {activeTab === 'account' ? (
+          <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm max-w-2xl mx-auto">
+            <div className="flex items-center gap-3 border-b border-gray-100 pb-5 mb-6">
+              <div className="p-3 bg-blue-50 rounded-xl text-primary-600 border border-blue-200/60">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-xl font-extrabold text-gray-900">
+                  {lang === 'en' ? 'Admin Account & Security' : 'Keamanan & Akun Admin'}
+                </h2>
+                <p className="text-xs text-gray-500 font-medium">
+                  {lang === 'en'
+                    ? 'Manage your admin login credentials securely. Stored with scrypt key derivation in SQLite.'
+                    : 'Kelola kredensial login admin dengan aman. Password di-hash menggunakan algoritma scrypt.'}
+                </p>
+              </div>
+            </div>
+
+            <div className="mb-6 p-4 bg-gray-50 rounded-xl border border-gray-200 flex items-center justify-between">
+              <div>
+                <span className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  {lang === 'en' ? 'Current Active Username' : 'Username Admin Aktif'}
+                </span>
+                <span className="text-sm font-extrabold text-primary-900 mt-0.5 block font-mono">
+                  {currentAdminUsername}
+                </span>
+              </div>
+              <span className="px-3 py-1 bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-full text-xs font-bold">
+                PROTECTED
+              </span>
+            </div>
+
+            <form onSubmit={handleAccountSubmit} className="space-y-5">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                  {lang === 'en' ? 'Current Password' : 'Kata Sandi Saat Ini'} <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="password"
+                  required
+                  value={accountCurrentPassword}
+                  onChange={(e) => setAccountCurrentPassword(e.target.value)}
+                  placeholder={lang === 'en' ? 'Enter current password to verify identity' : 'Masukkan kata sandi saat ini untuk verifikasi'}
+                  className="w-full px-4 py-2.5 border border-gray-200 focus:border-primary-500 focus:ring-1 focus:ring-primary-500 rounded-xl text-sm outline-none transition-all font-mono"
+                />
+              </div>
+
+              <div className="border-t border-gray-100 pt-4">
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                  {lang === 'en' ? 'New Username (Leave blank to keep unchanged)' : 'Username Baru (Kosongkan jika tidak diubah)'}
+                </label>
+                <input
+                  type="text"
+                  value={accountNewUsername}
+                  onChange={(e) => setAccountNewUsername(e.target.value)}
+                  placeholder={currentAdminUsername}
+                  className="w-full px-4 py-2.5 border border-gray-200 focus:border-primary-500 focus:ring-1 focus:ring-primary-500 rounded-xl text-sm outline-none transition-all font-mono"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                    {lang === 'en' ? 'New Password' : 'Kata Sandi Baru'}
+                  </label>
+                  <input
+                    type="password"
+                    value={accountNewPassword}
+                    onChange={(e) => setAccountNewPassword(e.target.value)}
+                    placeholder={lang === 'en' ? 'Min. 8 characters' : 'Min. 8 karakter'}
+                    className="w-full px-4 py-2.5 border border-gray-200 focus:border-primary-500 focus:ring-1 focus:ring-primary-500 rounded-xl text-sm outline-none transition-all font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                    {lang === 'en' ? 'Confirm New Password' : 'Konfirmasi Sandi Baru'}
+                  </label>
+                  <input
+                    type="password"
+                    value={accountConfirmPassword}
+                    onChange={(e) => setAccountConfirmPassword(e.target.value)}
+                    placeholder={lang === 'en' ? 'Repeat new password' : 'Ulangi kata sandi baru'}
+                    className="w-full px-4 py-2.5 border border-gray-200 focus:border-primary-500 focus:ring-1 focus:ring-primary-500 rounded-xl text-sm outline-none transition-all font-mono"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full mt-4 py-3 bg-primary-500 hover:bg-primary-600 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center shadow-md hover:shadow-lg disabled:opacity-50"
+              >
+                {loading ? (
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                ) : (
+                  lang === 'en' ? 'Update Admin Credentials' : 'Simpan Kredensial Baru'
+                )}
+              </button>
+            </form>
+          </div>
+        ) : activeTab === 'scopus' ? (
           <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm max-w-4xl mx-auto">
             <div className="flex items-center gap-3 border-b border-gray-100 pb-5 mb-6">
               <div className="p-3 bg-amber-50 rounded-xl text-amber-600 border border-amber-200/60">
