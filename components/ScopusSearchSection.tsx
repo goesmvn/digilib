@@ -158,37 +158,62 @@ export default function ScopusSearchSection({ lang }: { lang: 'id' | 'en' }) {
 
         {/* Search Bar & Year Filter */}
         <form onSubmit={handleSearch} className="max-w-3xl mx-auto mb-12">
-          <div className="flex flex-col sm:flex-row gap-3 bg-white p-2.5 rounded-2xl border border-gray-200 shadow-md">
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={isEn ? 'Search keywords, author, or paper title...' : 'Cari kata kunci, penulis, atau judul artikel...'}
-              className="flex-1 bg-transparent px-4 py-3 text-gray-900 placeholder-gray-400 outline-none text-sm md:text-base"
-            />
+          <div className="flex flex-col sm:flex-row gap-3 bg-white p-3 sm:p-2 rounded-2xl border border-gray-200 shadow-md">
+            {/* Main Text Input with clear border & icon */}
+            <div className="flex-1 flex items-center gap-2.5 bg-gray-50/90 sm:bg-transparent border border-gray-300 sm:border-0 rounded-xl px-3.5 py-1 sm:py-0 focus-within:bg-white focus-within:border-primary-500 focus-within:ring-2 focus-within:ring-primary-500/20 transition-all">
+              <svg className="w-5 h-5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={isEn ? 'Search keywords, author, or paper title...' : 'Cari kata kunci, penulis, atau judul artikel...'}
+                className="w-full bg-transparent py-2.5 sm:py-3 text-gray-900 placeholder-gray-400 outline-none text-sm md:text-base font-medium"
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery('')}
+                  className="text-gray-400 hover:text-gray-600 p-1 rounded-full transition-colors"
+                  title={isEn ? 'Clear query' : 'Hapus pencarian'}
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
             
-            <select
-              value={yearFilter}
-              onChange={(e) => handleYearChange(e.target.value)}
-              className="bg-gray-50 border border-gray-200 text-gray-800 text-xs md:text-sm font-semibold rounded-xl px-3 py-3 outline-none cursor-pointer hover:bg-gray-100 transition-colors shrink-0"
-            >
-              <option value="">{isEn ? 'All Years' : 'Semua Tahun'}</option>
-              <option value="2026">2026</option>
-              <option value="2025">2025</option>
-              <option value="2024">2024</option>
-              <option value="2023">2023</option>
-              <option value="2022">2022</option>
-              <option value="2021">2021</option>
-              <option value="2020">2020</option>
-              <option value="2019">2019</option>
-              <option value="2018">2018</option>
-              <option value="2015">2015 - 2017</option>
-            </select>
+            {/* Year Filter Dropdown */}
+            <div className="flex items-center gap-2 bg-gray-50/90 sm:bg-gray-50 border border-gray-300 sm:border-gray-200 text-gray-800 rounded-xl px-3 py-1 sm:py-0 focus-within:border-primary-500 transition-all shrink-0">
+              <svg className="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <select
+                value={yearFilter}
+                onChange={(e) => handleYearChange(e.target.value)}
+                className="bg-transparent text-gray-800 text-xs md:text-sm font-semibold py-2.5 sm:py-3 outline-none cursor-pointer hover:text-primary-700 transition-colors w-full sm:w-auto"
+              >
+                <option value="">{isEn ? 'All Years' : 'Semua Tahun'}</option>
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="2015">2015 - 2017</option>
+              </select>
+            </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="px-7 py-3.5 bg-accent-500 hover:bg-accent-600 text-white font-bold rounded-xl text-sm transition-all duration-300 shadow-md hover:shadow-lg shrink-0 flex items-center justify-center gap-2 border border-accent-400/40"
+              className="px-7 py-3.5 bg-accent-500 hover:bg-accent-600 active:scale-[0.98] text-white font-bold rounded-xl text-sm transition-all duration-300 shadow-md hover:shadow-lg shrink-0 flex items-center justify-center gap-2 border border-accent-400/40 cursor-pointer"
             >
               {loading ? (
                 <>
